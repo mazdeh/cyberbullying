@@ -1,4 +1,6 @@
 # cyberbullying
+
 UI For Instagram's Cyberbullying Survey
 
-npm install
+	npm install
+	node server.js
