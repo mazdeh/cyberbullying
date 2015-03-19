@@ -20,18 +20,19 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/comments.json', function(req, res) {
-  fs.readFile('comments.json', function(err, data) {
+app.get('/cyberbullying_data.json', function(req, res) {
+  fs.readFile('cyberbullying_data.json', function(err, data) {
+    console.log(data);
     res.setHeader('Content-Type', 'application/json');
     res.send(data);
   });
 });
 
-app.post('/comments.json', function(req, res) {
-  fs.readFile('comments.json', function(err, data) {
+app.post('/result.json', function(req, res) {
+  fs.readFile('result.json', function(err, data) {
     var comments = JSON.parse(data);
     comments.push(req.body);
-    fs.writeFile('comments.json', JSON.stringify(comments, null, 4), function(err) {
+    fs.writeFile('result.json', JSON.stringify(comments, null, 4), function(err) {
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Cache-Control', 'no-cache');
       res.send(JSON.stringify(comments));

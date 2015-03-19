@@ -9,6 +9,7 @@ var CommentBox = React.createClass({
       url: this.props.url,
       dataType: 'json',
       success: function(data) {
+        console.log(data);
         this.setState({data: data});
       }.bind(this),
       error: function(xhr, status, err) {
@@ -109,6 +110,6 @@ var Comment = React.createClass({
 });
 
 React.render(
-  <CommentBox url="comments.json" pollInterval={2000} />,
+  <CommentBox url="cyberbullying_data.json" pollInterval={2000} />,
   document.getElementById('content')
 );
