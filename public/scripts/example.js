@@ -71,7 +71,7 @@ var CommentList = React.createClass({
 }
 });
 
-var CommentForm = React.createClass({
+var QuestionForm = React.createClass({
 	handleSubmit: function(e) {
     e.preventDefault();
     // var author = this.refs.author.getDOMNode().value.trim();
@@ -84,7 +84,8 @@ var CommentForm = React.createClass({
   },
   render: function() {
     return (
-      <form className="commentForm" onSubmit={this.handleSubmit}>
+      <form className="c" onSubmit={this.handleSubmit}>
+
         <input type="text" size="40" placeholder="What are you doing RIGHT NOW?" ref="text" />
         <input type="submit" value="Post" />
       </form>
