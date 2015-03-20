@@ -3,14 +3,18 @@
 //   {author: "Jordan Walke", text: "This is *another* comment"}
 // ];
 
-var CommentBox = React.createClass({
-  loadCommentsFromServer: function() {
+var Page = React.createClass({
+  
+  handleSubmition: function(question1, question2) {
+    var data = {num: this.state.num, question1: question1, question2: question2}
+    console.log(data)
     $.ajax({
-      url: this.props.url,
+      url: "results.json",
       dataType: 'json',
+      type: 'POST',
+      data: data,
       success: function(data) {
-        console.log(data);
-        this.setState({data: data});
+        this.setState({num: this.state.num+1, data:this.state.data});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -18,17 +22,17 @@ var CommentBox = React.createClass({
     });
   },
   
-  handleCommentSubmit: function(comment) {
-  	var comments = this.state.data;
-    var newComments = comments.concat([comment]);
-    this.setState({data: newComments});
+  getInitialState: function(){
+    return {num: 0, data:[]};
+  },
+
+  componentDidMount: function(){
     $.ajax({
-      url: this.props.url,
+      url: "cyberbullying_data.json",
       dataType: 'json',
-      type: 'POST',
-      data: comment,
       success: function(data) {
-        this.setState({data: data});
+        console.log(data);
+        this.setState({num: this.state.num, data: data});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -36,26 +40,31 @@ var CommentBox = React.createClass({
     });
   },
 
-  getInitialState: function() {
-    return {data: []};
-  },
-  componentDidMount: function() {
-    this.loadCommentsFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
-  },
   render: function() {
+    console.log("Page num: " + this.state.num)
+    var indData = this.state.data[this.state.num]
+    if(indData){
     return (
-      <div className="commentBox">
+      <div className="page">
         <h1>Comments</h1>
-        <CommentList data={this.state.data} />
-        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+        <img src={indData.image_url}/>
+        <QuestionForm onQuestionSubmit={this.handleSubmition} />
       </div>
     );
+  }
+  else {
+    return (
+      <div className="page">
+        <h1>Loading...</h1>
+      
+      </div>
+    );
+  }
   }
 });
 
 // tutorial2.js
-var CommentList = React.createClass({
+var pageContent = React.createClass({
   render: function() {
   	var commentNodes = this.props.data.map(function (comment) {
   		return (
@@ -76,18 +85,26 @@ var QuestionForm = React.createClass({
 	handleSubmit: function(e) {
     e.preventDefault();
     // var author = this.refs.author.getDOMNode().value.trim();
-    var text = this.refs.text.getDOMNode().value.trim();
-    if (!text) {
-      return;
-    }
-    this.props.onCommentSubmit({text: text});
+    var question1 =  0
+    if(this.refs.question1.getDOMNode().checked)
+      question1 = 1
+    
+    var question2 = 0
+    if(this.refs.question2.getDOMNode().checked)
+        question2 = 1
+    this.props.onQuestionSubmit(question1, question2);
     // this.refs.text.getDOMNode().value = '';
   },
   render: function() {
     return (
-      <form className="c" onSubmit={this.handleSubmit}>
-
-        <input type="text" size="40" placeholder="What are you doing RIGHT NOW?" ref="text" />
+      <form className="onQuestionSubmit" onSubmit={this.handleSubmit}>
+        <p>Is there any cyberaggressive behavior in the online posts? Mark yes if there is at least one negative word/comment and or content with intent to harm someone or others. </p>
+         <input type="radio" name="question1" value="Yes" ref="question1" required/>Yes
+        <input type="radio" name="question1" value="No"/>No
+           <p>Is there any cyerbullying in the online post? Mark yes if there are negative words and or comment with intent to harm someone or other, and the posts include two or more repeated negativity against a victim that cannot easily defend him or herself</p>
+         <input type="radio" name="question2" value="Yes" ref="question2" required/>Yes
+        <input type="radio" name="question2" value="No"/>No
+        <p></p>
         <input type="submit" value="Post" />
       </form>
     );
@@ -110,6 +127,6 @@ var Comment = React.createClass({
 });
 
 React.render(
-  <CommentBox url="cyberbullying_data.json" pollInterval={2000} />,
+  <Page />,
   document.getElementById('content')
 );

@@ -21,25 +21,41 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/cyberbullying_data.json', function(req, res) {
-  fs.readFile('cyberbullying_data.json', function(err, data) {
+  fs.readFile('data/cyberbullying_data.json', function(err, data) {
     console.log(data);
     res.setHeader('Content-Type', 'application/json');
     res.send(data);
   });
 });
 
-app.post('/result.json', function(req, res) {
-  fs.readFile('result.json', function(err, data) {
-    var comments = JSON.parse(data);
-    comments.push(req.body);
-    fs.writeFile('result.json', JSON.stringify(comments, null, 4), function(err) {
+app.post('/results.json', function(req, res) {
+  fs.readFile('data/results.json', function(err, data) {
+    var data = JSON.parse(data);
+    var answer = req.body;
+    var ind = data[answer.num];
+    console.log(answer.question1)
+    if(answer.question1 == 1)
+      ind.yes1 = ind.yes1 + 1;
+    else 
+      ind.no1 = ind.no1 + 1;
+
+    if(answer.question2 == 1 )
+      ind.yes2 = ind.yes2 + 1;
+    else 
+      ind.no2 = ind.no2 + 1;
+
+    fs.writeFile('data/results.json',  JSON.stringify(data), function(err) {
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Cache-Control', 'no-cache');
-      res.send(JSON.stringify(comments));
+      res.send(JSON.stringify(data))
     });
   });
 });
 
-app.listen(3000);
+var server = app.listen(process.env.PORT || 3000, function() {
 
-console.log('Server started: http://localhost:3000/');
+    var host = server.address().address
+    var port = server.address().port
+
+    console.log('App listening at http://%s:%s', host, port)
+})
