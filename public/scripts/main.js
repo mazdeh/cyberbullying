@@ -41,7 +41,7 @@ var Page = React.createClass({
 
   render: function() {
     console.log("Page num: " + this.state.num)
-    if(this.state.data != []){
+    if(this.state.data[0]){
       var indData = this.state.data[this.state.num]
       if(indData){
       
