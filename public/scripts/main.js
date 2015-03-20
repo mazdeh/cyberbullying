@@ -157,6 +157,8 @@ var CommentList = React.createClass({
     var formatData = [];
     while(true){
       var text = this.props.data["comment_" + i]
+      if(!text)
+        break;
       if(text == " ")
           break;
       var user = this.props.data["user_id_" +i]
