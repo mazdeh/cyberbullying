@@ -7,7 +7,7 @@ UI For Instagram's Cyberbullying Survey
 	
 Or navigate to the live site:
 
-	https://lit-atoll-7388.herokuapp.com/
+	[This Link]https://cyberbullying-instagram.herokuapp.com/
 	
 Results are stored in:
 	
