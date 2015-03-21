@@ -46,21 +46,35 @@ var Page = React.createClass({
       if(indData){
       
     return (
-      <div className="page">
-        <h1>Page #{this.state.num +1}</h1>
-        <QuestionForm onQuestionSubmit={this.handleSubmition} />
-        <table>
-        <tr>
-        <td className="imageCell">
-        <h1> Image </h1>
-        <img src={indData.image_url}/>
-        </td>
-        <td>
-        <h2> Comments </h2>
-        <CommentList data={indData}/>
-        </td>
-        </tr>
-        </table>
+      <div className="page twelve columns">
+
+      <div className="row">
+          <img className="three columns" src="css/logo.png" />
+          <h4 className="title nine columns"> Cyberbullying Research on Instagram Data</h4>
+        </div>
+        
+        <div className="row" >
+            
+            <div className="imageCell six columns">
+              <div className="row">
+                <img src={indData.image_url}/>
+              </div>
+
+              <div className="row">
+                <QuestionForm onQuestionSubmit={this.handleSubmition} />
+              </div>
+
+            </div>
+        
+            <div className="six columns examplegrid">
+              <h5 className='title'> Comments </h5>
+              <div className="twelve columns">
+                  <CommentList data={indData}/>
+              </div>
+            </div>
+
+        </div>
+
       </div>
     );
   } else {
@@ -123,14 +137,22 @@ var QuestionForm = React.createClass({
   render: function() {
     return (
       <form className="onQuestionSubmit" onSubmit={this.handleSubmit}>
-        <p>Is there any cyberaggressive behavior in the online posts? Mark yes if there is at least one negative word/comment and or content with intent to harm someone or others. </p>
-         <input type="radio" name="question1" value="Yes" ref="question1" required/>Yes
-        <input type="radio" name="question1" value="No" ref="question1a"/>No
-           <p>Is there any cyerbullying in the online post? Mark yes if there are negative words and or comment with intent to harm someone or other, and the posts include two or more repeated negativity against a victim that cannot easily defend him or herself</p>
-         <input type="radio" name="question2" value="Yes" ref="question2" required/>Yes
-        <input type="radio" name="question2" value="No" ref="question2a"/>No
-        <p></p>
-        <input type="submit" value="Post" />
+      <div> <h6> Read the comments to the right and answer the questions below to the best of your judgment.</h6></div>
+      <div className="row form">
+          <p><strong>Question 1: </strong>Is there any cyberaggressive behavior in the online posts? Mark yes if there is at least one negative word/comment and or content with intent to harm someone or others. </p>
+            <input type="radio" name="question1" value="Yes" ref="question1" required/>Yes
+            <input type="radio" name="question1" value="No" ref="question1a"/>No
+
+      </div>
+           
+      <div className="row form">
+          <p><strong>Question 2: </strong>Is there any cyerbullying in the online post? Mark yes if there are negative words and or comment with intent to harm someone or other, and the posts include two or more repeated negativity against a victim that cannot easily defend him or herself</p>
+            <input type="radio" name="question2" value="Yes" ref="question2" required/>Yes
+            <input type="radio" name="question2" value="No" ref="question2a"/>No
+      </div>
+
+        <input type="submit" value="Save Answers and Go to Next Image" />
+      
       </form>
     );
   }
@@ -168,11 +190,17 @@ var CommentList = React.createClass({
     }
     var commentNodes = formatData.map(function (comment) {
       return (
-        <div className="comment">
-        <h4> User: {comment.user} </h4>
-        <p> Comment: {comment.text} </p>
-        <h6> {comment.time} </h6>
-      </div>
+        
+        <div className="comment examplegrid">
+          
+          <div className="tweleve columns">
+            <div className="row">
+              <h6><strong>{comment.user}</strong>: {comment.text}</h6>
+            </div>
+          </div>
+        
+        </div>
+
       );
     });
       return (
